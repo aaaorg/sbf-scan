@@ -16,7 +16,6 @@
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-y-md">
             <q-btn
               :label="'📷 ' + $t('qrSetup')"
-              type="submit"
               color="primary"
               class="full-width"
             />

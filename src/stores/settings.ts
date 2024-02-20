@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 
 export interface SettingsState {
-  url: string | undefined,
-  apiKey: string | undefined,
+  url?: string,
+  apiKey?: string,
   configured: boolean,
   skipCert: boolean,
   image: File | FileList | null | undefined,
@@ -10,11 +10,11 @@ export interface SettingsState {
 
 export const useSettingsStore = defineStore('settings', {
   state: (): SettingsState => ({
-    url: undefined as string | undefined,
-    apiKey: undefined as string | undefined,
+    url: undefined,
+    apiKey: undefined,
     configured: false,
     skipCert: false,
-    image: undefined as File | FileList | null | undefined,
+    image: undefined,
   }),
   getters: {
     getUrl({url}): string | undefined { return url},

@@ -1,12 +1,14 @@
 import { defineStore } from 'pinia';
 
 export interface SessionState {
-  authenticated: boolean
+  authenticated: boolean,
+  customerNumber?: string,
 }
 
 export const useSessionStore = defineStore('session', {
   state: (): SessionState => ({
-    authenticated: false
+    authenticated: false,
+    customerNumber: undefined,
   }),
   persist: false,
 });

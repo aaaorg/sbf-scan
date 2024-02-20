@@ -18,4 +18,6 @@ export default {
   qrSetup: 'QR kód',
   submit: 'Odeslat',
   reset: 'Resetovat',
+  customerNumber: 'Číslo zákazníka',
+  login: 'Přihlásit se',
 };
