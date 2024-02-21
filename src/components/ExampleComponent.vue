@@ -8,9 +8,9 @@
     <!-- <q-btn @click="changeLanguage('cs')" label="CZ" /> -->
     <!-- <q-btn @click="changeLanguage('en-US')" label="EN" /> -->
 
-    <Suspense>
+    <suspense>
       <scan-input />
-    </Suspense>
+    </suspense>
     <camera-scanner v-on:code-read-result="updateResult" />
     <q-btn to="/initialize" label="Initialize" />
     <p>Result: {{ result }}</p>

@@ -19,5 +19,7 @@ export default {
   submit: 'Odeslat',
   reset: 'Resetovat',
   customerNumber: 'Číslo zákazníka',
+  customerNumberHint: '1111012345',
+  customerNumberError: 'Zadejte validní číslo zákazníka',
   login: 'Přihlásit se',
 };

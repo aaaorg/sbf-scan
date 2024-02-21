@@ -5,6 +5,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useQuasar } from 'quasar';
 import { CapacitorIntents } from 'capacitor-android-intents';
 
 export interface ScanInputProps {
@@ -14,29 +15,32 @@ withDefaults(defineProps<ScanInputProps>(), {
   title: 'Scan Input',
 });
 
+const $q = useQuasar();
 const intentValue = ref('');
 let receiverId: string | null = null;
 
-const rId = await CapacitorIntents.registerBroadcastReceiver(
-  { filters: ['device.scanner.EVENT'] },
-  async (data) => {
-    console.dir(data);
+if ($q.platform.is.nativeMobile) {
+  const rId = await CapacitorIntents.registerBroadcastReceiver(
+    { filters: ['device.scanner.EVENT'] },
+    async (data) => {
+      console.dir(data);
 
-    if (data.extras.hasOwnProperty('EXTRA_EVENT_DECODE_VALUE')) {
-      let stringValue = new TextDecoder().decode(
-        new Uint8Array(data.extras['EXTRA_EVENT_DECODE_VALUE'])
-      );
-      intentValue.value = stringValue;
-    }
+      if (data.extras.hasOwnProperty('EXTRA_EVENT_DECODE_VALUE')) {
+        let stringValue = new TextDecoder().decode(
+          new Uint8Array(data.extras['EXTRA_EVENT_DECODE_VALUE'])
+        );
+        intentValue.value = stringValue;
+      }
 
-    // now unregister
-    if (receiverId !== null) {
-      await CapacitorIntents.unregisterBroadcastReceiver({ id: receiverId });
-      receiverId = null;
+      // now unregister
+      if (receiverId !== null) {
+        await CapacitorIntents.unregisterBroadcastReceiver({ id: receiverId });
+        receiverId = null;
+      }
+      console.log(rId);
     }
-    console.log(rId);
-  }
-);
+  );
+}
 
 async function sendIntent() {
   await CapacitorIntents.sendBroadcastIntent({

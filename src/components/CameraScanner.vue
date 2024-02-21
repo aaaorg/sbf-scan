@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="$q.platform.is.nativeMobile">
     <q-btn
       color="primary"
       label="Toggle Camera"
@@ -30,9 +30,10 @@
 import { Ref, ref } from 'vue';
 import { BarcodeType, BoundingBox, ScanResult } from './models';
 import { QrcodeStream } from 'vue-qrcode-reader';
+import { useQuasar } from 'quasar';
 
 export interface CameraScannerProps {
-  codes: BarcodeType[];
+  codes?: BarcodeType[];
 }
 withDefaults(defineProps<CameraScannerProps>(), {
   codes: () => ['qr_code', 'ean_13', 'ean_8'],
@@ -42,6 +43,7 @@ const emit = defineEmits<{
   'code-read-result': [value: ScanResult[]];
 }>();
 
+const $q = useQuasar();
 const error = ref('');
 const result = ref(null) as Ref<ScanResult[] | null>;
 const cameraModalShown = ref(false);
