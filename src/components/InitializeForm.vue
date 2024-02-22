@@ -126,8 +126,9 @@ function onReset() {
 
 function onResetAdvanced() {
   $store.storeName = 'Small Business Fridge';
-  $store.image = undefined;
+  $store.image = '/icons/favicon-128x128.png';
   $store.skipCert = false;
+  image.value = undefined;
 }
 
 function validateConnection() {

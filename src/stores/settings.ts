@@ -15,7 +15,7 @@ export const useSettingsStore = defineStore('settings', {
     url: undefined,
     apiKey: undefined,
     storeName: 'Small Business Fridge',
-    image: undefined,
+    image: '/icons/favicon-128x128.png',
     skipCert: false,
   }),
   getters: {
