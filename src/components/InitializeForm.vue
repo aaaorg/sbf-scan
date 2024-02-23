@@ -31,9 +31,7 @@
               :label="$t('serverAddress')"
               :hint="$t('serverAddressHint')"
               lazy-rules
-              :rules="[
-                (val) => (val && val.length > 0) || $t('serverAddressError'),
-              ]"
+              :rules="[(val) => isValidUrl(val) || $t('serverAddressError')]"
             />
 
             <q-input
@@ -150,5 +148,14 @@ function updateLogo(file: File) {
     if (typeof e.target?.result === 'string') $store.image = e.target?.result;
   };
   reader.readAsDataURL(file);
+}
+
+function isValidUrl(url: string) {
+  try {
+    new URL(url);
+    return true;
+  } catch (e) {
+    return false;
+  }
 }
 </script>
