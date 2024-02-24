@@ -1,14 +1,18 @@
 import { defineStore } from 'pinia';
+import { User } from 'components/models';
 
 export interface SessionState {
-  authenticated: boolean,
   customerNumber?: string,
+  user?: User
 }
 
 export const useSessionStore = defineStore('session', {
   state: (): SessionState => ({
-    authenticated: false,
     customerNumber: undefined,
+    user: undefined,
   }),
+  getters: {
+    authenticated: (state) => state.user !== undefined,
+  },
   persist: false,
 });

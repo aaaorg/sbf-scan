@@ -2,10 +2,10 @@
   <q-card class="q-ma-md col-12 col-md-10 col-lg-6 col-xl-2" flat>
     <q-card-section class="q-pa-md">
       <q-img
-        v-if="$store.image"
+        v-if="$settings.image"
         height="150px"
         fit="contain"
-        :src="$store.image"
+        :src="$settings.image"
       ></q-img>
       <q-skeleton v-else height="150px" square />
     </q-card-section>
@@ -27,7 +27,7 @@
             />
             <q-input
               filled
-              v-model="$store.url"
+              v-model="$settings.url"
               :label="$t('serverAddress')"
               :hint="$t('serverAddressHint')"
               lazy-rules
@@ -36,7 +36,7 @@
 
             <q-input
               filled
-              v-model="$store.apiKey"
+              v-model="$settings.apiKey"
               :label="$t('apiKey')"
               :hint="$t('apiKeyHint')"
               lazy-rules
@@ -64,7 +64,7 @@
           <q-form @reset="onResetAdvanced" class="q-gutter-y-md">
             <q-input
               filled
-              v-model="$store.storeName"
+              v-model="$settings.storeName"
               :label="$t('customStoreName')"
               hint="Small Business Fridge"
               lazy-rules
@@ -84,7 +84,7 @@
             </q-file>
 
             <q-toggle
-              v-model="$store.skipCert"
+              v-model="$settings.skipCert"
               :label="$t('skipCertValidation')"
             />
 
@@ -107,7 +107,7 @@ import { Ref, ref } from 'vue';
 import { useSettingsStore } from 'stores/settings';
 import { useRouter } from 'vue-router';
 
-const $store = useSettingsStore();
+const $settings = useSettingsStore();
 const $router = useRouter();
 
 const tab: Ref<string> = ref('one');
@@ -118,14 +118,14 @@ function onSubmit() {
 }
 
 function onReset() {
-  $store.url = undefined;
-  $store.apiKey = undefined;
+  $settings.url = undefined;
+  $settings.apiKey = undefined;
 }
 
 function onResetAdvanced() {
-  $store.storeName = 'Small Business Fridge';
-  $store.image = '/icons/favicon-128x128.png';
-  $store.skipCert = false;
+  $settings.storeName = 'Small Business Fridge';
+  $settings.image = '/icons/favicon-128x128.png';
+  $settings.skipCert = false;
   image.value = undefined;
 }
 
@@ -134,7 +134,7 @@ function validateConnection() {
 }
 
 function onConfigured() {
-  $store.configured = true;
+  $settings.configured = true;
   $router.push('/');
 }
 
@@ -145,7 +145,8 @@ function onValidationError() {
 function updateLogo(file: File) {
   const reader = new FileReader();
   reader.onload = (e) => {
-    if (typeof e.target?.result === 'string') $store.image = e.target?.result;
+    if (typeof e.target?.result === 'string')
+      $settings.image = e.target?.result;
   };
   reader.readAsDataURL(file);
 }

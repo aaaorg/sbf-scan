@@ -1,10 +1,28 @@
-export interface Todo {
-  id: number;
-  content: string;
+// export interface Todo {
+//   id: number;
+//   content: string;
+// }
+
+// export interface Meta {
+//   totalCount: number;
+// }
+
+export interface Category {
+  name: string;
+  color: string;
 }
 
-export interface Meta {
-  totalCount: number;
+export interface Product {
+  displayName: string;
+  description: string;
+  imagePath: string;
+  category: Category;
+}
+
+export interface User {
+  displayName: string;
+  supplier: boolean;
+  favorites?: Product[];
 }
 
 export interface BoundingBox {
@@ -16,6 +34,18 @@ export interface BoundingBox {
   right: number;
   bottom: number;
   left: number;
+}
+
+export interface ScanResult {
+  boundingBox: BoundingBox;
+  rawValue: string;
+  format: BarcodeType;
+  cornerPoints: [
+    { x: number; y: number },
+    { x: number; y: number },
+    { x: number; y: number },
+    { x: number; y: number }
+  ];
 }
 
 export interface ScanResult {

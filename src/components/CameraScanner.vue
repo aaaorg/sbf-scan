@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
-import { BarcodeType, BoundingBox, ScanResult } from './models';
+import { BarcodeType, ScanResult } from './models'; // BoundingBox
 import { QrcodeStream } from 'vue-qrcode-reader';
 import { useQuasar } from 'quasar';
 
@@ -53,7 +53,7 @@ async function onDecode(res: ScanResult[]) {
   emit('code-read-result', result.value);
   cameraModalShown.value = false;
 }
-async function onError(err: any) {
+async function onError(err: Error) {
   error.value = `[${err.name}]: `;
 
   if (err.name === 'NotAllowedError') {

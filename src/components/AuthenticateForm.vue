@@ -47,23 +47,41 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useSessionStore } from 'stores/session';
-import { useSettingsStore } from 'stores/settings';
 import { useRouter } from 'vue-router';
+import { useSettingsStore } from 'stores/settings';
+import { useSessionStore } from 'stores/session';
+import { User } from 'components/models';
 
+const $router = useRouter();
 const $settings = useSettingsStore();
 const $session = useSessionStore();
-const $router = useRouter();
 
 const customerNumber = ref('');
 
 function onSubmit() {
-  $session.authenticated = true;
-  $session.customerNumber = customerNumber.value;
-  $router.push('/');
+  authenticate() ? onAuthSuccess() : onAuthError();
 }
 
 function onReset() {
   customerNumber.value = '';
+}
+
+function authenticate() {
+  //TODO: Call the API to authenticate the user
+  return true;
+}
+
+function onAuthSuccess() {
+  $session.customerNumber = customerNumber.value;
+  $session.user = {
+    displayName: 'Example Customer',
+    supplier: false,
+    favorites: [],
+  } as User;
+  $router.push('/');
+}
+
+function onAuthError() {
+  console.log('Authentication failed');
 }
 </script>
