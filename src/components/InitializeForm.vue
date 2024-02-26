@@ -17,7 +17,7 @@
 
       <q-separator />
 
-      <q-tab-panels v-model="tab" animated>
+      <q-tab-panels v-model="tab" animated swipeable>
         <q-tab-panel name="one">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-y-md">
             <q-btn
@@ -42,6 +42,7 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || $t('apiKeyError')]"
               type="password"
+              autocom
             />
 
             <q-btn
@@ -58,6 +59,7 @@
               class="full-width"
             />
           </q-form>
+          <q-space />
         </q-tab-panel>
 
         <q-tab-panel name="two">
@@ -101,7 +103,7 @@
 import { Ref, ref } from 'vue';
 import { useSettingsStore } from 'stores/settings';
 import { useRouter } from 'vue-router';
-import axios from 'boot/axios';
+import { axios } from 'boot/axios';
 
 const $settings = useSettingsStore();
 const $router = useRouter();
@@ -124,10 +126,13 @@ function onResetAdvanced() {
 }
 
 function validateConnection() {
+  // TODO: Call the API to validate the connection
   return true;
 }
 
 function onConfigured() {
+  axios.defaults.baseURL = $settings.url;
+  axios.defaults.headers.common['sb-Api-Secret'] = $settings.apiKey;
   $settings.configured = true;
   $router.push('/');
 }

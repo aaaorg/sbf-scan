@@ -51,6 +51,7 @@ import { useRouter } from 'vue-router';
 import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
 import { User } from 'components/models';
+import { axios } from 'boot/axios';
 
 const $router = useRouter();
 const $settings = useSettingsStore();

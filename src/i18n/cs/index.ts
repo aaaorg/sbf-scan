@@ -13,7 +13,7 @@ export default {
   customStoreName: 'Vlastní název obchodu',
   customStoreLogo: 'Vlastní logo obchodu',
   setup: 'Nastavení',
-  advanced: 'Pokročilé',
+  advanced: 'Branding',
   qrSetup: 'QR kód',
   submit: 'Odeslat',
   reset: 'Resetovat',

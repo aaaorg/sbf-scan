@@ -16,6 +16,46 @@
         <div>{{ $session.user?.displayName }}</div>
       </q-toolbar>
     </q-header>
+
+    <q-footer>
+      <q-toolbar>
+        <div class="row full-width">
+          <div class="col">
+            <q-field readonly>
+              <template v-slot:control>
+                <div
+                  class="self-center full-width no-outline text-nowrap text-white text-h5"
+                  tabindex="0"
+                >
+                  20 položek
+                </div>
+              </template>
+            </q-field>
+          </div>
+          <div class="col full-width">
+            <q-btn
+              round
+              class="absolute-center"
+              color="positive"
+              icon="logout"
+            />
+          </div>
+          <div class="col">
+            <q-field readonly>
+              <template v-slot:control>
+                <div
+                  class="self-center full-width no-outline text-nowrap text-white text-h5 text-right"
+                  tabindex="0"
+                >
+                  328 Kč
+                </div>
+              </template>
+            </q-field>
+          </div>
+        </div>
+      </q-toolbar>
+    </q-footer>
+
     <q-page-container>
       <router-view />
     </q-page-container>
