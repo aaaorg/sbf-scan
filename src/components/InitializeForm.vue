@@ -83,11 +83,6 @@
               </template>
             </q-file>
 
-            <q-toggle
-              v-model="$settings.skipCert"
-              :label="$t('skipCertValidation')"
-            />
-
             <q-btn
               :label="$t('reset')"
               type="reset"
@@ -106,10 +101,10 @@
 import { Ref, ref } from 'vue';
 import { useSettingsStore } from 'stores/settings';
 import { useRouter } from 'vue-router';
+import axios from 'boot/axios';
 
 const $settings = useSettingsStore();
 const $router = useRouter();
-
 const tab: Ref<string> = ref('one');
 const image: Ref<File | FileList | null | undefined> = ref(undefined);
 
@@ -125,7 +120,6 @@ function onReset() {
 function onResetAdvanced() {
   $settings.storeName = 'Small Business Fridge';
   $settings.image = '/icons/favicon-128x128.png';
-  $settings.skipCert = false;
   image.value = undefined;
 }
 

@@ -6,7 +6,6 @@ export interface SettingsState {
   apiKey?: string,
   storeName: string,
   image?: string,
-  skipCert: boolean,
 }
 
 export const useSettingsStore = defineStore('settings', {
@@ -15,8 +14,7 @@ export const useSettingsStore = defineStore('settings', {
     url: undefined,
     apiKey: undefined,
     storeName: 'Small Business Fridge',
-    image: '/icons/favicon-128x128.png',
-    skipCert: false,
+    image: '/icons/favicon-128x128.png'
   }),
   getters: {
     getUrl({url}): string | undefined { return url},
