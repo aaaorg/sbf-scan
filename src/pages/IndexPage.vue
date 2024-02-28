@@ -1,42 +1,44 @@
 <template>
-  <q-page class="row items-center justify-evenly">
-    <example-component
+  <q-page class="row justify-evenly">
+    <!-- <example-component
       title="Example component 2"
       active
       :todos="todos"
       :meta="meta"
-    ></example-component>
+    ></example-component> -->
+    <q-list bordered class="full-width">
+      <q-item
+        v-for="item in items"
+        :key="item.id"
+        class="q-my-sm"
+        clickable
+        v-ripple
+      >
+        <q-item-section avatar>
+          <q-avatar color="primary" text-color="white">
+            {{ item.name }}
+          </q-avatar>
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>{{ item.name }}</q-item-label>
+          <q-item-label caption lines="1">{{ item.count }}</q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          <q-icon name="chat_bubble" color="green" />
+        </q-item-section>
+      </q-item>
+    </q-list>
   </q-page>
 </template>
 
 <script setup lang="ts">
-import { Todo, Meta } from 'components/models';
 import ExampleComponent from 'components/ExampleComponent.vue';
 import { ref } from 'vue';
 
-const todos = ref<Todo[]>([
-  {
-    id: 1,
-    content: 'ct1',
-  },
-  {
-    id: 2,
-    content: 'ct2',
-  },
-  {
-    id: 3,
-    content: 'ct3',
-  },
-  {
-    id: 4,
-    content: 'ct4',
-  },
-  {
-    id: 5,
-    content: 'ct5',
-  },
+const items = ref([
+  { id: 1, image: 'something.png', name: 'John', count: 3 },
+  { id: 2, image: 'something.png', name: 'John', count: 3 },
 ]);
-const meta = ref<Meta>({
-  totalCount: 1200,
-});
 </script>

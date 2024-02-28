@@ -33,12 +33,13 @@
             </q-field>
           </div>
           <div class="col full-width">
-            <q-btn
+            <!-- <q-btn
               round
               class="absolute-center"
               color="positive"
-              icon="logout"
-            />
+              icon="shopping_cart_checkout"
+            /> -->
+            <q-btn class="absolute-center" color="secondary">DOKONČIT</q-btn>
           </div>
           <div class="col">
             <q-field readonly>
