@@ -11,11 +11,6 @@
     </q-card-section>
     <q-card-section class="q-pa-md">
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-y-md">
-        <q-btn
-          :label="'📷 ' + $t('qrSetup')"
-          color="primary"
-          class="full-width"
-        />
         <q-input
           filled
           v-model="customerNumber"
@@ -41,6 +36,7 @@
           class="full-width"
         />
       </q-form>
+      <camera-scanner></camera-scanner>
     </q-card-section>
   </q-card>
 </template>
@@ -52,6 +48,7 @@ import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
 import { User } from 'components/models';
 import { axios } from 'boot/axios';
+import CameraScanner from './CameraScanner.vue';
 
 const $router = useRouter();
 const $settings = useSettingsStore();

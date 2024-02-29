@@ -4,6 +4,7 @@ export interface SettingsState {
   configured: boolean,
   url?: string,
   apiKey?: string,
+  enableCamera: boolean,
   storeName: string,
   image?: string,
 }
@@ -13,8 +14,9 @@ export const useSettingsStore = defineStore('settings', {
     configured: false,
     url: undefined,
     apiKey: undefined,
+    enableCamera: false,
     storeName: 'Small Business Fridge',
-    image: '/icons/favicon-128x128.png'
+    image: '/icons/favicon-128x128.png',
   }),
   getters: {
     getUrl({url}): string | undefined { return url},

@@ -10,6 +10,7 @@ export default {
   apiKey: 'API klíč',
   apiKeyHint: 'VelmiTajnáHodnota',
   apiKeyError: 'Prosím zadejte platný API klíč',
+  enableCamera: 'Povolit skenování kamerou',
   customStoreName: 'Vlastní název obchodu',
   customStoreLogo: 'Vlastní logo obchodu',
   setup: 'Nastavení',

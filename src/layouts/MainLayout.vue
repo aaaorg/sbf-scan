@@ -17,7 +17,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer>
+    <q-footer v-if="$session.authenticated">
       <q-toolbar>
         <div class="row full-width">
           <div class="col">
@@ -48,7 +48,7 @@
                   class="self-center full-width no-outline text-nowrap text-white text-h5 text-right"
                   tabindex="0"
                 >
-                  328 Kč
+                  1 328 Kč
                 </div>
               </template>
             </q-field>

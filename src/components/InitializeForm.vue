@@ -19,12 +19,11 @@
 
       <q-tab-panels v-model="tab" animated swipeable>
         <q-tab-panel name="one">
-          <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-y-md">
-            <q-btn
-              :label="'📷 ' + $t('qrSetup')"
-              color="primary"
-              class="full-width"
-            />
+          <q-form
+            @submit="onSubmit"
+            @reset="onSettingsReset"
+            class="q-gutter-y-md"
+          >
             <q-input
               filled
               v-model="$settings.url"
@@ -45,6 +44,11 @@
               autocom
             />
 
+            <q-toggle
+              v-model="$settings.enableCamera"
+              :label="$t('enableCamera')"
+            />
+
             <q-btn
               :label="$t('submit')"
               type="submit"
@@ -59,11 +63,11 @@
               class="full-width"
             />
           </q-form>
-          <q-space />
+          <camera-scanner></camera-scanner>
         </q-tab-panel>
 
         <q-tab-panel name="two">
-          <q-form @reset="onResetAdvanced" class="q-gutter-y-md">
+          <q-form @reset="onBrandingReset" class="q-gutter-y-md">
             <q-input
               filled
               v-model="$settings.storeName"
@@ -104,6 +108,7 @@ import { Ref, ref } from 'vue';
 import { useSettingsStore } from 'stores/settings';
 import { useRouter } from 'vue-router';
 import { axios } from 'boot/axios';
+import CameraScanner from './CameraScanner.vue';
 
 const $settings = useSettingsStore();
 const $router = useRouter();
@@ -114,12 +119,13 @@ function onSubmit() {
   validateConnection() ? onConfigured() : onValidationError();
 }
 
-function onReset() {
+function onSettingsReset() {
   $settings.url = undefined;
   $settings.apiKey = undefined;
+  $settings.enableCamera = false;
 }
 
-function onResetAdvanced() {
+function onBrandingReset() {
   $settings.storeName = 'Small Business Fridge';
   $settings.image = '/icons/favicon-128x128.png';
   image.value = undefined;

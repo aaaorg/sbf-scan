@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { useQuasar } from 'quasar';
-import { Todo, Meta, ScanResult } from './models';
+import { ScanResult } from './models';
 import { useI18n } from 'vue-i18n';
 import ScanInput from './ScanInput.vue';
 import CameraScanner from './CameraScanner.vue';
