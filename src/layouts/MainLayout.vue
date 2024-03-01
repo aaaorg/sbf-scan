@@ -39,7 +39,9 @@
               color="positive"
               icon="shopping_cart_checkout"
             /> -->
-            <q-btn class="absolute-center" color="secondary">DOKONČIT</q-btn>
+            <q-btn class="absolute-center" color="negative">{{
+              $session.authenticated ? 'TRUE' : 'FALSE'
+            }}</q-btn>
           </div>
           <div class="col">
             <q-field readonly>

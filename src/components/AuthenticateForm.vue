@@ -13,13 +13,12 @@
       <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-y-md">
         <q-input
           filled
+          ref="customerNumberRef"
           v-model="customerNumber"
           :label="$t('customerNumber')"
           :hint="$t('customerNumberHint')"
           lazy-rules
-          :rules="[
-            (val) => (val && val.length > 0) || $t('customerNumberError'),
-          ]"
+          :rules="[validateCustomerNumber]"
         />
 
         <q-btn
@@ -27,6 +26,7 @@
           type="submit"
           color="primary"
           class="full-width"
+          :loading="loadingAuth"
         />
         <q-btn
           :label="$t('reset')"
@@ -35,6 +35,13 @@
           flat
           class="full-width"
         />
+        <!-- <q-btn
+          :label="$t('reset')"
+          color="primary"
+          flat
+          class="full-width"
+          @click="resetValidation"
+        /> -->
       </q-form>
       <camera-scanner></camera-scanner>
     </q-card-section>
@@ -42,7 +49,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { QInput, useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
+import { Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
@@ -50,22 +59,55 @@ import { User } from 'components/models';
 import { axios } from 'boot/axios';
 import CameraScanner from './CameraScanner.vue';
 
+const $q = useQuasar();
+const { t } = useI18n();
 const $router = useRouter();
 const $settings = useSettingsStore();
 const $session = useSessionStore();
 
 const customerNumber = ref('');
+const customerNumberRef: Ref<QInput | null> = ref(null);
+const loadingAuth = ref(false);
+const invalidCustomerNumbers: string[] = [];
 
-function onSubmit() {
-  authenticate() ? onAuthSuccess() : onAuthError();
+async function onSubmit() {
+  (await authenticate()) ? onAuthSuccess() : onAuthError();
 }
 
 function onReset() {
   customerNumber.value = '';
 }
 
-function authenticate() {
+// Simulate an API call delay
+function sleep(delay: number) {
+  return new Promise((resolve) => setTimeout(resolve, delay));
+}
+
+async function authenticate() {
+  loadingAuth.value = true;
   //TODO: Call the API to authenticate the user
+  // Currently emulating bad auth
+  await sleep(1000);
+  invalidCustomerNumbers.push(customerNumber.value);
+  customerNumberRef.value?.validate();
+  loadingAuth.value = false;
+  return false;
+}
+
+// function resetValidation() {
+//   qinput.value?.resetValidation();
+// }
+
+function validateCustomerNumber(val: string) {
+  if (!val) {
+    return t('customerNumberRequiredError');
+  }
+  if (val.length < 6) {
+    return t('customerNumberLengthError');
+  }
+  if (invalidCustomerNumbers.includes(val)) {
+    return t('customerNumberNotExistsError');
+  }
   return true;
 }
 
@@ -80,6 +122,9 @@ function onAuthSuccess() {
 }
 
 function onAuthError() {
-  console.log('Authentication failed');
+  $q.notify({
+    color: 'negative',
+    message: t('customerNumberNotExistsError'),
+  });
 }
 </script>
