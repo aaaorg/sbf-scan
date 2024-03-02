@@ -27,7 +27,7 @@
                   class="self-center full-width no-outline text-nowrap text-white text-h5"
                   tabindex="0"
                 >
-                  20 položek
+                  {{ $session.basket?.length }} položek
                 </div>
               </template>
             </q-field>
@@ -39,9 +39,12 @@
               color="positive"
               icon="shopping_cart_checkout"
             /> -->
-            <q-btn class="absolute-center" color="negative">{{
-              $session.authenticated ? 'TRUE' : 'FALSE'
-            }}</q-btn>
+            <q-btn
+              class="absolute-center"
+              color="negative"
+              @click="addProductDebug"
+              >{{ $session.authenticated ? 'TRUE' : 'FALSE' }}</q-btn
+            >
           </div>
           <div class="col">
             <q-field readonly>
@@ -50,7 +53,7 @@
                   class="self-center full-width no-outline text-nowrap text-white text-h5 text-right"
                   tabindex="0"
                 >
-                  1 328 Kč
+                  {{ $session.totalPrice }} Kč
                 </div>
               </template>
             </q-field>
@@ -71,4 +74,23 @@ import { useSessionStore } from 'stores/session';
 
 const $settings = useSettingsStore();
 const $session = useSessionStore();
+
+function addProductDebug() {
+  $session.basket.push({
+    product: {
+      id: 'string' + $session.basket.length,
+      ean: 'string',
+      price: 105,
+      displayName: 'Monster Energy Drink 0,5l',
+      description: 'Kvalitní osvěžení',
+      imagePath: 'string',
+      category: {
+        name: 'Nápoje',
+        color: 'primary',
+      },
+      maxQuantity: 3,
+    },
+    quantity: 1,
+  });
+}
 </script>

@@ -13,13 +13,23 @@ export interface Category {
 }
 
 export interface Product {
+  id: string;
+  ean: string;
+  price: number;
   displayName: string;
   description: string;
   imagePath: string;
   category: Category;
+  maxQuantity: number;
+}
+
+export interface BasketItem {
+  product: Product;
+  quantity: number;
 }
 
 export interface User {
+  id: string;
   displayName: string;
   supplier: boolean;
   favorites?: Product[];

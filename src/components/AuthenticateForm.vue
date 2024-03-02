@@ -88,10 +88,15 @@ async function authenticate() {
   //TODO: Call the API to authenticate the user
   // Currently emulating bad auth
   await sleep(1000);
-  invalidCustomerNumbers.push(customerNumber.value);
-  customerNumberRef.value?.validate();
-  loadingAuth.value = false;
-  return false;
+  if (customerNumber.value === '123456') {
+    invalidCustomerNumbers.push(customerNumber.value);
+    customerNumberRef.value?.validate();
+    loadingAuth.value = false;
+    return false;
+  } else {
+    loadingAuth.value = false;
+    return true;
+  }
 }
 
 // function resetValidation() {
@@ -114,6 +119,7 @@ function validateCustomerNumber(val: string) {
 function onAuthSuccess() {
   $session.customerNumber = customerNumber.value;
   $session.user = {
+    id: '1',
     displayName: 'Example Customer',
     supplier: false,
     favorites: [],
