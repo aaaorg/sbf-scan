@@ -27,7 +27,7 @@
                   class="self-center full-width no-outline text-nowrap text-white text-h5"
                   tabindex="0"
                 >
-                  {{ $session.basket?.length }} položek
+                  {{ $session.totalProducts }} položek
                 </div>
               </template>
             </q-field>

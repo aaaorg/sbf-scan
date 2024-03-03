@@ -15,7 +15,8 @@ export const useSessionStore = defineStore('session', {
   }),
   getters: {
     authenticated: (state) => state.user !== undefined,
-    totalPrice: (state) => state.basket?.reduce((acc, basketItem) => acc + basketItem.product.price, 0),
+    totalPrice: (state) => state.basket?.reduce((acc, basketItem) => acc + (basketItem.product.price * basketItem.quantity), 0),
+    totalProducts: (state) => state.basket?.reduce((acc, basketItem) => acc + basketItem.quantity, 0)
   },
   persist: false,
 });
