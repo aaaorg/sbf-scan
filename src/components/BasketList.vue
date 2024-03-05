@@ -15,7 +15,7 @@
         <q-icon name="delete" />
       </template>
 
-      <q-item clickable v-ripple>
+      <q-item clickable v-ripple @click="showItemDetails(item)">
         <q-item-section avatar>
           <q-avatar color="primary" text-color="white" size="4rem">
             {{ item.product.displayName }}
@@ -64,17 +64,25 @@
       </q-item>
     </q-slide-item>
   </q-list>
+
+  <basket-item-details
+    v-model:visible="visibleItemDetails"
+    v-model:item="selectedItem"
+  ></basket-item-details>
 </template>
 
 <script setup lang="ts">
 import { useSessionStore } from 'stores/session';
 import { BasketItem } from 'components/models';
+import BasketItemDetails from 'components/BasketItemDetails.vue';
 import { ref, Ref } from 'vue';
 import { QSlideItem } from 'quasar';
 
 const $session = useSessionStore();
 
 const basketItems: Ref<QSlideItem[] | null> = ref([]);
+const selectedItem: Ref<BasketItem | null> = ref(null);
+const visibleItemDetails: Ref<boolean> = ref(false);
 
 function removeItem(index: number, { reset }: { reset: () => void }) {
   reset();
@@ -97,5 +105,10 @@ function decreaseQuantity(index: number) {
   if ($session.basket[index].quantity <= 0) {
     $session.basket.splice(index, 1);
   }
+}
+
+function showItemDetails(item: BasketItem) {
+  selectedItem.value = item;
+  visibleItemDetails.value = true;
 }
 </script>
