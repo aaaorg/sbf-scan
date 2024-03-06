@@ -21,24 +21,11 @@
       <q-toolbar>
         <div class="row full-width">
           <div class="col">
-            <q-field readonly>
-              <template v-slot:control>
-                <div
-                  class="self-center full-width no-outline text-nowrap text-white text-h5"
-                  tabindex="0"
-                >
-                  {{ $session.totalProducts }} položek
-                </div>
-              </template>
-            </q-field>
+            <div class="text-h5 text-no-wrap">
+              {{ $session.totalProducts }} položek
+            </div>
           </div>
           <div class="col full-width">
-            <!-- <q-btn
-              round
-              class="absolute-center"
-              color="positive"
-              icon="shopping_cart_checkout"
-            /> -->
             <q-btn
               class="absolute-center"
               color="negative"
@@ -46,17 +33,10 @@
               >{{ $session.authenticated ? 'TRUE' : 'FALSE' }}</q-btn
             >
           </div>
-          <div class="col">
-            <q-field readonly>
-              <template v-slot:control>
-                <div
-                  class="self-center full-width no-outline text-nowrap text-white text-h5 text-right"
-                  tabindex="0"
-                >
-                  {{ $session.totalPrice }} Kč
-                </div>
-              </template>
-            </q-field>
+          <div class="col v">
+            <div class="text-h5 text-no-wrap text-right">
+              {{ $session.totalPrice }} Kč
+            </div>
           </div>
         </div>
       </q-toolbar>
@@ -81,8 +61,13 @@ function addProductDebug() {
       id: 'string' + $session.basket.length,
       ean: 'string',
       price: 105,
-      displayName: 'Monster Energy Drink 0,5l',
-      description: 'Kvalitní osvěžení',
+      displayName:
+        'Monster Energy Drink 0,5l se sexy příchutí Marakváji a papagváji s trochou lásky a svěžesti Monster Energy Drink 0,5l se sexy příchutí Marakváji a papagváji s trochou lásky a svěžesti'.substring(
+          0,
+          7 + $session.basket.length * 10
+        ),
+      description:
+        'Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv. Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv. Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv. Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv',
       imagePath: 'string',
       category: {
         name: 'Nápoje',

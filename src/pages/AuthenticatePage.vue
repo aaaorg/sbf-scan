@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import AuthenticateForm from 'components/AuthenticateForm.vue';
+import AuthenticateForm from 'components/Authentication/AuthenticateForm.vue';
 </script>

@@ -17,33 +17,15 @@
 
       <q-item clickable v-ripple @click="showItemDetails(item)">
         <q-item-section avatar>
-          <q-avatar color="primary" text-color="white" size="4rem">
-            {{ item.product.displayName }}
+          <q-avatar square size="4rem">
+            <img src="https://cdn.quasar.dev/img/avatar.png" />
           </q-avatar>
         </q-item-section>
 
         <q-item-section>
           <q-item-label>{{ item.product.displayName }}</q-item-label>
-          <!-- <q-item-label caption lines="1">{{ item.count }}</q-item-label> -->
           <q-item-label>
-            <q-btn
-              round
-              color="primary"
-              icon="remove"
-              @click="decreaseQuantity(index)"
-              @click.stop
-              @keypress.stop
-            />
-            <q-btn
-              round
-              color="primary"
-              icon="add"
-              class="q-mx-md"
-              :disable="item.quantity >= item.product.maxQuantity"
-              @click="increaseQuantity(item)"
-              @click.stop
-              @keypress.stop
-            />
+            <minus-plus v-model="$session.basket[index]" />
           </q-item-label>
         </q-item-section>
 
@@ -75,6 +57,7 @@
 import { useSessionStore } from 'stores/session';
 import { BasketItem } from 'components/models';
 import BasketItemDetails from 'components/BasketItemDetails.vue';
+import MinusPlus from 'components/MinusPlus.vue';
 import { ref, Ref } from 'vue';
 import { QSlideItem } from 'quasar';
 
@@ -94,17 +77,6 @@ function maxItem(index: number) {
     basketItems.value[index].reset();
   }
   $session.basket[index].quantity = $session.basket[index].product.maxQuantity;
-}
-
-function increaseQuantity(item: BasketItem) {
-  item.quantity++;
-}
-
-function decreaseQuantity(index: number) {
-  $session.basket[index].quantity--;
-  if ($session.basket[index].quantity <= 0) {
-    $session.basket.splice(index, 1);
-  }
 }
 
 function showItemDetails(item: BasketItem) {

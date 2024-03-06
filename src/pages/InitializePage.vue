@@ -5,5 +5,5 @@
 </template>
 
 <script setup lang="ts">
-import InitializeForm from 'components/InitializeForm.vue';
+import InitializeForm from 'components/Initialization/InitializeForm.vue';
 </script>
