@@ -20,21 +20,22 @@
     <q-footer v-if="$session.authenticated">
       <q-toolbar>
         <div class="row full-width">
-          <div class="col">
-            <div class="text-h5 text-no-wrap">
+          <div class="col-5">
+            <div class="text-h5 text-no-wrap ellipsis">
               {{ $session.totalProducts }} položek
             </div>
           </div>
-          <div class="col full-width">
+          <div class="col-2">
             <q-btn
+              square
               class="absolute-center"
-              color="negative"
+              :color="$session.basket.length ? 'positive' : 'negative'"
+              :icon="$session.basket.length ? 'shopping_cart' : 'logout'"
               @click="addProductDebug"
-              >{{ $session.authenticated ? 'TRUE' : 'FALSE' }}</q-btn
-            >
+            ></q-btn>
           </div>
-          <div class="col v">
-            <div class="text-h5 text-no-wrap text-right">
+          <div class="col-5">
+            <div class="text-h5 text-no-wrap ellipsis text-right">
               {{ $session.totalPrice }} Kč
             </div>
           </div>

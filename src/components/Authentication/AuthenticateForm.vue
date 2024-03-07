@@ -120,7 +120,7 @@ function onAuthSuccess() {
   $session.customerNumber = customerNumber.value;
   $session.user = {
     id: '1',
-    displayName: 'Example Customer',
+    displayName: 'Kateřina Nováková Dlouhojmenná',
     supplier: false,
     favorites: [],
   } as User;

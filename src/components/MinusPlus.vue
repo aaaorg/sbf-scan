@@ -1,6 +1,6 @@
 <template>
-  <div class="row">
-    <div class="col">
+  <div class="row q-col-gutter-sm">
+    <div class="col-shrink">
       <q-btn
         round
         color="primary"
@@ -10,7 +10,7 @@
         @keypress.stop
       />
     </div>
-    <div class="col">
+    <div class="col-shrink">
       <q-btn
         round
         color="primary"

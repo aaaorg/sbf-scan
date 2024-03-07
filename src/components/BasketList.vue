@@ -23,7 +23,9 @@
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>{{ item.product.displayName }}</q-item-label>
+          <q-item-label class="text-bold">{{
+            item.product.displayName
+          }}</q-item-label>
           <q-item-label>
             <minus-plus v-model="$session.basket[index]" />
           </q-item-label>
@@ -37,8 +39,8 @@
                 tabindex="0"
                 unselectable="on"
               >
-                {{ item.product.price }} Kč <br />
-                x{{ item.quantity }}
+                <p class="q-mb-none text-bold">{{ item.product.price }} Kč</p>
+                <p class="q-mb-none text-bold">x{{ item.quantity }}</p>
               </div>
             </template>
           </q-field>
