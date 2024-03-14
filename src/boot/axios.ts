@@ -11,7 +11,7 @@ declare module '@vue/runtime-core' {
 export default boot(({ store }) => {
   const settings = useSettingsStore(store);
   axios.defaults.baseURL = settings.url;
-  axios.defaults.headers.common['sb-Api-Secret'] = settings.apiKey;
+  axios.defaults.headers.common['sbf-Api-Secret'] = settings.apiKey;
 });
 
 export { axios };

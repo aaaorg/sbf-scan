@@ -17,6 +17,7 @@ export default {
   advanced: 'Branding',
   submit: 'Odeslat',
   reset: 'Resetovat',
+  validationError: 'Zadané údaje nejsou platné',
   customerNumber: 'Číslo zákazníka',
   customerNumberHint: '123456789',
   customerNumberRequiredError: 'Zadejte číslo zákazníka',

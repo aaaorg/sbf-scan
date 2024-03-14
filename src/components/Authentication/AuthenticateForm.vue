@@ -35,13 +35,6 @@
           flat
           class="full-width"
         />
-        <!-- <q-btn
-          :label="$t('reset')"
-          color="primary"
-          flat
-          class="full-width"
-          @click="resetValidation"
-        /> -->
       </q-form>
       <camera-scanner></camera-scanner>
     </q-card-section>
@@ -78,30 +71,28 @@ function onReset() {
   customerNumber.value = '';
 }
 
-// Simulate an API call delay
-function sleep(delay: number) {
-  return new Promise((resolve) => setTimeout(resolve, delay));
-}
-
 async function authenticate() {
   loadingAuth.value = true;
-  //TODO: Call the API to authenticate the user
-  // Currently emulating bad auth
-  await sleep(1000);
-  if (customerNumber.value === '123456') {
-    invalidCustomerNumbers.push(customerNumber.value);
-    customerNumberRef.value?.validate();
-    loadingAuth.value = false;
-    return false;
-  } else {
-    loadingAuth.value = false;
-    return true;
-  }
+  return await axios
+    .get('/api/scannerAuthUser?customer=' + customerNumber.value)
+    .then((user) => {
+      $session.customerNumber = customerNumber.value;
+      $session.user = {
+        id: user.data._id,
+        displayName: user.data.displayName,
+        supplier: user.data.supplier,
+        favorites: [],
+      } as User;
+      loadingAuth.value = false;
+      return true;
+    })
+    .catch(() => {
+      loadingAuth.value = false;
+      invalidCustomerNumbers.push(customerNumber.value);
+      customerNumberRef.value?.validate();
+      return false;
+    });
 }
-
-// function resetValidation() {
-//   qinput.value?.resetValidation();
-// }
 
 function validateCustomerNumber(val: string) {
   if (!val) {
@@ -117,13 +108,6 @@ function validateCustomerNumber(val: string) {
 }
 
 function onAuthSuccess() {
-  $session.customerNumber = customerNumber.value;
-  $session.user = {
-    id: '1',
-    displayName: 'Kateřina Nováková Dlouhojmenná',
-    supplier: false,
-    favorites: [],
-  } as User;
   $router.push('/');
 }
 

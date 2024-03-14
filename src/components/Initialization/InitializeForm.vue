@@ -104,19 +104,24 @@
 </template>
 
 <script setup lang="ts">
+import { useQuasar } from 'quasar';
+import { useI18n } from 'vue-i18n';
 import { Ref, ref } from 'vue';
 import { useSettingsStore } from 'stores/settings';
 import { useRouter } from 'vue-router';
 import { axios } from 'boot/axios';
-import CameraScanner from './CameraScanner.vue';
+import CameraScanner from 'components/CameraScanner.vue';
 
-const $settings = useSettingsStore();
+const $q = useQuasar();
+const { t } = useI18n();
 const $router = useRouter();
+const $settings = useSettingsStore();
+
 const tab: Ref<string> = ref('one');
 const image: Ref<File | FileList | null | undefined> = ref(undefined);
 
-function onSubmit() {
-  validateConnection() ? onConfigured() : onValidationError();
+async function onSubmit() {
+  (await validateConnection()) ? onConfigured() : onValidationError();
 }
 
 function onSettingsReset() {
@@ -131,9 +136,20 @@ function onBrandingReset() {
   image.value = undefined;
 }
 
-function validateConnection() {
-  // TODO: Call the API to validate the connection
-  return true;
+async function validateConnection() {
+  return await axios
+    .get('/api/scannerValidate', {
+      headers: {
+        'sbf-Api-Secret': $settings.apiKey,
+      },
+      baseURL: $settings.url,
+    })
+    .then(() => {
+      return true;
+    })
+    .catch(() => {
+      return false;
+    });
 }
 
 function onConfigured() {
@@ -144,7 +160,10 @@ function onConfigured() {
 }
 
 function onValidationError() {
-  console.log('Validation Error');
+  $q.notify({
+    color: 'negative',
+    message: t('validationError'),
+  });
 }
 
 function updateLogo(file: File) {

@@ -1,6 +1,10 @@
 <template>
   <div v-if="$q.platform.is.nativeMobile || isDev">
-    <q-page-sticky position="bottom-left" :offset="[10, 5]">
+    <q-page-sticky
+      v-if="$settings.enableCamera"
+      position="bottom-left"
+      :offset="[10, 5]"
+    >
       <q-btn
         fab
         icon="sym_o_barcode_scanner"
@@ -31,9 +35,10 @@
 
 <script setup lang="ts">
 import { Ref, ref } from 'vue';
-import { BarcodeType, ScanResult } from './models'; // BoundingBox
+import { BarcodeType, ScanResult } from './models'; // BoundingBox7
 import { QrcodeStream } from 'vue-qrcode-reader';
 import { useQuasar } from 'quasar';
+import { useSettingsStore } from 'stores/settings';
 
 export interface CameraScannerProps {
   codes?: BarcodeType[];
@@ -51,6 +56,7 @@ const error = ref('');
 const result = ref(null) as Ref<ScanResult[] | null>;
 const cameraModalShown = ref(false);
 const isDev = Boolean(process.env.DEV);
+const $settings = useSettingsStore();
 
 async function onDecode(res: ScanResult[]) {
   result.value = res;
