@@ -1,11 +1,8 @@
-// export interface Todo {
-//   id: number;
-//   content: string;
-// }
-
-// export interface Meta {
-//   totalCount: number;
-// }
+export interface ScanEventBus {
+  [key: string]: (...args: string[]) => void;
+  'scan-input': (value: string) => void;
+  'some-event': (arg1: string) => void; // example
+}
 
 export interface Category {
   name: string;
@@ -44,18 +41,6 @@ export interface BoundingBox {
   right: number;
   bottom: number;
   left: number;
-}
-
-export interface ScanResult {
-  boundingBox: BoundingBox;
-  rawValue: string;
-  format: BarcodeType;
-  cornerPoints: [
-    { x: number; y: number },
-    { x: number; y: number },
-    { x: number; y: number },
-    { x: number; y: number }
-  ];
 }
 
 export interface ScanResult {

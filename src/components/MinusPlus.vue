@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { useSessionStore } from 'stores/session';
-import { BasketItem } from 'components/models';
+import { BasketItem } from './models';
 import { ModelRef } from 'vue';
 
 const $session = useSessionStore();

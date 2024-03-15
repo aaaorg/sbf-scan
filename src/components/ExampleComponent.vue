@@ -30,8 +30,8 @@ import { computed, ref } from 'vue';
 import { useQuasar } from 'quasar';
 import { ScanResult } from './models';
 import { useI18n } from 'vue-i18n';
-import ScanInput from './ScanInput.vue';
-import CameraScanner from './CameraScanner.vue';
+import ScanInput from 'components/ScanInput.vue';
+import CameraScanner from 'components/CameraScanner.vue';
 const { locale } = useI18n({ useScope: 'global' });
 
 const $q = useQuasar();
@@ -46,13 +46,9 @@ window.addEventListener('sendIntentReceived', () => {
 
 interface Props {
   title: string;
-  todos?: Todo[];
-  meta: Meta;
   active: boolean;
 }
-const props = withDefaults(defineProps<Props>(), {
-  todos: () => [],
-});
+const props = withDefaults(defineProps<Props>(), {});
 
 const clickCount = ref(0);
 function increment() {
@@ -68,6 +64,4 @@ function updateResult(value: ScanResult[]) {
   console.log('updateResult', value);
   result.value = value[0].rawValue;
 }
-
-const todoCount = computed(() => props.todos.length);
 </script>

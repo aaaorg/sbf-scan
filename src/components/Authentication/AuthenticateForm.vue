@@ -48,7 +48,7 @@ import { Ref, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
-import { User } from 'components/models';
+import { User } from '../models';
 import CameraScanner from 'components/CameraScanner.vue';
 import { axios } from 'boot/axios';
 

@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
 import { useSessionStore } from 'stores/session';
-import { BasketItem } from 'components/models';
+import { BasketItem } from './models';
 import BasketItemDetails from 'components/BasketItemDetails.vue';
 import MinusPlus from 'components/MinusPlus.vue';
 import { ref, Ref } from 'vue';

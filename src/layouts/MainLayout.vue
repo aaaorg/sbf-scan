@@ -52,9 +52,20 @@
 <script setup lang="ts">
 import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
+import { inject, onMounted } from 'vue';
+import { EventBus } from 'quasar';
+import ScanInput from 'components/ScanInput.vue';
 
 const $settings = useSettingsStore();
 const $session = useSessionStore();
+const bus = inject('bus') as EventBus;
+
+onMounted(() => {
+  console.log('MainLayout onMounted');
+  bus.on('scan-input', (value: string): void => {
+    console.log('scan-input', value);
+  });
+});
 
 function addProductDebug() {
   $session.basket.push({
