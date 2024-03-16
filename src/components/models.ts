@@ -1,7 +1,9 @@
 export interface ScanEventBus {
+  // Index signature for each property of the event bus
+  // Each property must take a function with void return type and any number of string arguments (even none)
   [key: string]: (...args: string[]) => void;
-  'scan-input': (value: string) => void;
-  'some-event': (arg1: string) => void; // example
+  'code-scanned': (value: string) => void;
+  'scan-failed': () => void;
 }
 
 export interface Category {

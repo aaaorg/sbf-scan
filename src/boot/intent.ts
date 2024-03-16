@@ -1,31 +1,27 @@
 import { boot } from 'quasar/wrappers';
-import { SendIntent } from 'send-intent';
+import { CapacitorIntents } from 'capacitor-android-intents';
 
-async function expect_intent(): Promise<string> {
-  return SendIntent.checkSendIntentReceived()
-    .then((result: any) => {
-      if (result) {
-        console.log('SendIntent received');
-        console.log(JSON.stringify(result));
+// On native mobile register a broadcast receiver for the device scanner event
+export default boot(async ({ app }) => {
+  if (app.config.globalProperties.$q.platform.is.nativeMobile) {
+    await CapacitorIntents.registerBroadcastReceiver(
+      { filters: ['device.scanner.EVENT'] },
+      async (data) => {
+        // If the broadcast intent decode was successful and the value is present, emit the code-scanned event
+        if (
+          data?.extras['EXTRA_EVENT_DECODE_RESULT'] === true &&
+          data?.extras?.hasOwnProperty('EXTRA_EVENT_DECODE_VALUE')
+        ) {
+          const stringValue = new TextDecoder().decode(
+            new Uint8Array(data.extras['EXTRA_EVENT_DECODE_VALUE'])
+          );
+          // Register input handle on respective screens
+          app.config.globalProperties.$bus.emit('code-scanned', stringValue);
+        } else {
+          // Register some notification to the user that the scan failed
+          app.config.globalProperties.$bus.emit('scan-failed');
+        }
       }
-      if (result.url) {
-        const resultUrl = decodeURIComponent(result.url);
-        console.log(resultUrl);
-      }
-      SendIntent.finish();
-      return 'intent cool';
-    })
-    .catch((err) => {
-      SendIntent.finish();
-      console.error(err);
-      return 'error'
-    });
-}
-
-// "async" is optional;
-// more info on params: https://v2.quasar.dev/quasar-cli/boot-files
-export default boot(async (/* { app, router, ... } */) => {
-  // something to do
+    );
+  }
 });
-
-export { expect_intent };

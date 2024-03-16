@@ -3,6 +3,7 @@
   "appName": "SBF Scan",
   "webDir": "www",
   "server": {
-    "androidScheme": "https"
+    "androidScheme": "https",
+    "url": "https://10.100.36.101:9500"
   }
 }

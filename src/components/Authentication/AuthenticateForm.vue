@@ -42,9 +42,9 @@
 </template>
 
 <script setup lang="ts">
-import { QInput, useQuasar } from 'quasar';
+import { EventBus, QInput, useQuasar } from 'quasar';
 import { useI18n } from 'vue-i18n';
-import { Ref, ref } from 'vue';
+import { Ref, inject, onMounted, onUnmounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
@@ -57,11 +57,24 @@ const { t } = useI18n();
 const $router = useRouter();
 const $settings = useSettingsStore();
 const $session = useSessionStore();
+const bus = inject('bus') as EventBus;
 
 const customerNumber = ref('');
 const customerNumberRef: Ref<QInput | null> = ref(null);
 const loadingAuth = ref(false);
 const invalidCustomerNumbers: string[] = [];
+
+onMounted(() => {
+  bus.on('code-scanned', (value: string): void => {
+    console.log('scanned authentication code: ' + value);
+    customerNumber.value = value;
+    onSubmit();
+  });
+});
+
+onUnmounted(() => {
+  bus.off('code-scanned');
+});
 
 async function onSubmit() {
   (await authenticate()) ? onAuthSuccess() : onAuthError();
@@ -98,9 +111,9 @@ function validateCustomerNumber(val: string) {
   if (!val) {
     return t('customerNumberRequiredError');
   }
-  if (val.length < 6) {
-    return t('customerNumberLengthError');
-  }
+  // if (val.length < 6) {
+  //   return t('customerNumberLengthError');
+  // }
   if (invalidCustomerNumbers.includes(val)) {
     return t('customerNumberNotExistsError');
   }

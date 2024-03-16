@@ -2,17 +2,7 @@
   <q-layout view="hHh lpR fFf">
     <q-header elevated>
       <q-toolbar>
-        <!-- <q-btn
-          flat
-          dense
-          round
-          icon="menu"
-          aria-label="Menu"
-          @click="toggleLeftDrawer"
-        /> -->
-
         <q-toolbar-title> {{ $settings.storeName }} </q-toolbar-title>
-
         <div>{{ $session.user?.displayName }}</div>
       </q-toolbar>
     </q-header>
@@ -52,19 +42,26 @@
 <script setup lang="ts">
 import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
-import { inject, onMounted } from 'vue';
-import { EventBus } from 'quasar';
-import ScanInput from 'components/ScanInput.vue';
+import { inject, onMounted, onUnmounted } from 'vue';
+import { EventBus, useQuasar } from 'quasar';
 
+const $q = useQuasar();
 const $settings = useSettingsStore();
 const $session = useSessionStore();
 const bus = inject('bus') as EventBus;
 
 onMounted(() => {
-  console.log('MainLayout onMounted');
-  bus.on('scan-input', (value: string): void => {
-    console.log('scan-input', value);
+  bus.on('scan-failed', (): void => {
+    $q.notify({
+      type: 'negative',
+      message: 'Nepodařilo se načíst kód',
+      timeout: 500,
+    });
   });
+});
+
+onUnmounted(() => {
+  bus.off('scan-failed');
 });
 
 function addProductDebug() {

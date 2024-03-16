@@ -2,13 +2,19 @@ import { EventBus } from 'quasar';
 import { boot } from 'quasar/wrappers';
 import { ScanEventBus } from 'components/models';
 
+// Type global property on the app instance
+declare module '@vue/runtime-core' {
+  interface ComponentCustomProperties {
+    $bus: EventBus<ScanEventBus>;
+  }
+}
+
 export default boot(({ app }) => {
-  // const bus = new EventBus<ScanEventBus>();
+  const bus = new EventBus<ScanEventBus>();
 
-  const bus = new EventBus<{
-    'scan-input': (value: string) => void;
-    'some-event': (arg1: string) => void;
-  }>();
-
+  // Allows injecting in Composition API <script setup>
   app.provide('bus', bus);
+
+  // Allows access from the Options API and boot files app instance
+  app.config.globalProperties.$bus = bus;
 });
