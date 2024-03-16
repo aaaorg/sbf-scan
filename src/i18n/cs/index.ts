@@ -24,4 +24,6 @@ export default {
   customerNumberLengthError: 'Číslo zákazníka musí mít alespoň 6 znaků',
   customerNumberNotExistsError: 'Zákazník nenalezen',
   login: 'Přihlásit se',
+  cartEmptyTitle: 'Košík je prázdný',
+  cartEmptyDescription: 'Naskenujte nějaký produkt'
 };

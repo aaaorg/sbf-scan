@@ -18,7 +18,7 @@ export function registerGuard(
       // If user is not authenticated, redirect to /login
       else if (
         to.meta.requiresAuth &&
-        !sessionStore.authenticated
+        !sessionStore.customerNumber
       ) {
         console.log('Redirecting to /login');
         return '/login';
