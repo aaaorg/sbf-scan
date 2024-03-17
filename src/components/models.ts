@@ -11,20 +11,62 @@ export interface Category {
   color: string;
 }
 
-export interface Product {
-  id: string;
-  ean: string;
+export interface ProductStock {
+  amount_left: number;
   price: number;
+}
+
+export interface Product {
+  _id: string;
+  code: string;
   displayName: string;
   description: string;
   imagePath: string;
   category: Category;
-  maxQuantity: number;
+  stock: ProductStock[];
+  stockSum: number;
 }
 
 export interface BasketItem {
   product: Product;
   quantity: number;
+  readonly totalPrice: number;
+  readonly priceDetails: {amount: number, price: number}[];
+}
+
+export class BasketItemImpl implements BasketItem {
+  constructor(public product: Product, public quantity: number) {}
+  get totalPrice() {
+    let totalQuantity = 0;
+    let totalPrice = 0;
+    for (let i = 0; i < this.product.stockSum && totalQuantity < this.quantity ; i++) {
+      for (let j = 0; j < this.product.stock[i].amount_left && totalQuantity < this.quantity; j++) {
+        totalQuantity++;
+        totalPrice += this.product.stock[i].price;
+      }
+    }
+    return totalPrice;
+  }
+  get priceDetails() {
+    const result = [];
+    let amount = this.quantity;
+    for (let i = 0; i < this.product.stock.length; i++) {
+        if (this.product.stock[i].amount_left >= amount) {
+            result.push({
+                'amount': amount,
+                'price': this.product.stock[i].price
+            });
+            return result;
+        } else {
+            result.push({
+                'amount': this.product.stock[i].amount_left,
+                'price': this.product.stock[i].price
+            });
+            amount -= this.product.stock[i].amount_left;
+        }
+    }
+    return result;
+  }
 }
 
 export interface User {

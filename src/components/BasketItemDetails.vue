@@ -10,11 +10,7 @@
         <q-tooltip class="bg-white text-primary">Close</q-tooltip>
       </q-btn>
 
-      <q-img
-        src="https://cdn.quasar.dev/img/avatar.png"
-        style="height: 50%"
-        fit="contain"
-      >
+      <q-img :src="model?.product.imagePath" style="height: 50%" fit="contain">
         <div class="absolute-bottom text-h6">
           {{ model?.product.displayName }}
         </div>
@@ -30,7 +26,7 @@
         <q-slider
           v-model="model.quantity"
           :min="1"
-          :max="model.product.maxQuantity"
+          :max="model.product.stockSum"
           label
           label-always
           style="width: 50%"
@@ -73,7 +69,7 @@ const visible: ModelRef<boolean> = defineModel<boolean>('visible', {
 });
 
 function removeFromBasket(item: BasketItem) {
-  $session.basket.splice($session.basket.indexOf(item), 1);
+  // $session.basket.splice($session.basket.indexOf(item), 1);
   visible.value = false;
 }
 </script>

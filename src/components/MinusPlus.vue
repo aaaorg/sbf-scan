@@ -5,7 +5,7 @@
         round
         color="primary"
         icon="remove"
-        @click="decreaseQuantity(model)"
+        @click="decreaseQuantity()"
         @click.stop
         @keypress.stop
       />
@@ -15,8 +15,8 @@
         round
         color="primary"
         icon="add"
-        :disable="model.quantity >= model.product.maxQuantity"
-        @click="increaseQuantity(model)"
+        :disable="basketItem.quantity >= basketItem.product.stockSum"
+        @click="increaseQuantity()"
         @click.stop
         @keypress.stop
       />
@@ -27,26 +27,25 @@
 <script setup lang="ts">
 import { useSessionStore } from 'stores/session';
 import { BasketItem } from './models';
-import { ModelRef } from 'vue';
 
-const $session = useSessionStore();
-
-export interface BasketItemDetailsProps {
-  'v-model': BasketItem;
+export interface MinusPlusProps {
+  basketKey: string;
 }
-
-const model: ModelRef<BasketItem> = defineModel<BasketItem>({
-  required: true,
+const props = withDefaults(defineProps<MinusPlusProps>(), {
+  basketKey: '',
 });
 
-function increaseQuantity(item: BasketItem) {
-  item.quantity++;
+const $session = useSessionStore();
+const basketItem = $session.basket.get(props.basketKey) as BasketItem;
+
+function increaseQuantity() {
+  basketItem.quantity++;
 }
 
-function decreaseQuantity(item: BasketItem) {
-  item.quantity--;
-  if (item.quantity <= 0) {
-    $session.basket.splice($session.basket.indexOf(item), 1);
+function decreaseQuantity() {
+  basketItem.quantity--;
+  if (basketItem.quantity < 1) {
+    $session.basket.delete(props.basketKey);
   }
 }
 </script>

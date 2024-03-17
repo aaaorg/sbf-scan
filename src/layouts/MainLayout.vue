@@ -12,21 +12,21 @@
         <div class="row full-width">
           <div class="col-5">
             <div class="text-h5 text-no-wrap ellipsis">
-              {{ $session.totalProducts }} položek
+              {{ $session.totalProductsTyped }} položek
             </div>
           </div>
           <div class="col-2">
             <q-btn
               square
               class="absolute-center"
-              :color="$session.basket.length ? 'positive' : 'negative'"
-              :icon="$session.basket.length ? 'shopping_cart' : 'logout'"
-              @click="addProductDebug"
+              :color="$session.basket.size ? 'positive' : 'negative'"
+              :icon="$session.basket.size ? 'shopping_cart' : 'logout'"
+              @click="$session.basket.size ? purchaseProducts() : endSession()"
             ></q-btn>
           </div>
           <div class="col-5">
             <div class="text-h5 text-no-wrap ellipsis text-right">
-              {{ $session.totalPrice }} Kč
+              {{ $session.totalPriceTyped }} Kč
             </div>
           </div>
         </div>
@@ -44,8 +44,11 @@ import { useSettingsStore } from 'stores/settings';
 import { useSessionStore } from 'stores/session';
 import { inject, onMounted, onUnmounted } from 'vue';
 import { EventBus, useQuasar } from 'quasar';
+import { useRouter } from 'vue-router';
+import { axios } from 'src/boot/axios';
 
 const $q = useQuasar();
+const $router = useRouter();
 const $settings = useSettingsStore();
 const $session = useSessionStore();
 const bus = inject('bus') as EventBus;
@@ -64,27 +67,63 @@ onUnmounted(() => {
   bus.off('scan-failed');
 });
 
-function addProductDebug() {
-  $session.basket.push({
-    product: {
-      id: 'string' + $session.basket.length,
-      ean: 'string',
-      price: 105,
-      displayName:
-        'Monster Energy Drink 0,5l se sexy příchutí Marakváji a papagváji s trochou lásky a svěžesti Monster Energy Drink 0,5l se sexy příchutí Marakváji a papagváji s trochou lásky a svěžesti'.substring(
-          0,
-          7 + $session.basket.length * 10
-        ),
-      description:
-        'Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv. Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv. Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv. Kvalitní osvěžení pro každého, úhledně zabalené v plechovce a to prosím bez jakýchkoliv konzervačních konzerv',
-      imagePath: 'string',
-      category: {
-        name: 'Nápoje',
-        color: 'primary',
-      },
-      maxQuantity: 3,
-    },
-    quantity: 1,
-  });
+function endSession() {
+  $session.$reset();
+  $router.push('/login');
+}
+
+async function purchaseProducts() {
+  for (const [key, value] of $session.basket) {
+    for (let i = 0; i < value.priceDetails.length; i++) {
+      for (let j = 0; j < value.priceDetails[i].amount; j++) {
+        const result = await axios
+          .post('/api/scannerOrder', {
+            customer: $session.customerNumber,
+            product: key,
+            price: value.priceDetails[i].price,
+          })
+          .catch(() => {
+            $q.notify({
+              type: 'negative',
+              message: 'Nepodařilo se zakoupit produkt',
+              timeout: 1000,
+            });
+          });
+        if (result) {
+          await new Promise((resolve) => setTimeout(resolve, 1000));
+          value.priceDetails[i].amount--;
+          if (value.priceDetails[i].amount === 0) {
+            value.priceDetails.splice(i, 1);
+            // $session.basket.delete(key);
+          }
+          $q.notify({
+            type: 'positive',
+            message: `Produkt ${value.product.displayName} zakoupen za ${value.priceDetails[i].price} Kč`,
+            timeout: 3000,
+          });
+          console.log(result);
+        }
+        // sleep for 2 seconds
+
+        // .then(() => {
+        //   value.priceDetails[i].amount--;
+        //   if (value.priceDetails[i].amount === 0) {
+        //     value.priceDetails.splice(i, 1);
+        //     // $session.basket.delete(key);
+        //   }
+        // })
+        // .catch(() => {
+        //   $q.notify({
+        //     type: 'negative',
+        //     message: 'Nepodařilo se zakoupit produkt',
+        //     timeout: 1000,
+        //   });
+        // });
+      }
+    }
+    // item.product.stockSum -= item.quantity;
+    $session.basket.delete(key);
+  }
+  endSession();
 }
 </script>

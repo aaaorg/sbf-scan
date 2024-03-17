@@ -68,7 +68,7 @@ onMounted(() => {
   bus.on('code-scanned', (value: string): void => {
     console.log('scanned authentication code: ' + value);
     customerNumber.value = value;
-    onSubmit();
+    !invalidCustomerNumbers.includes(value) && onSubmit();
   });
 });
 
@@ -99,10 +99,12 @@ async function authenticate() {
       loadingAuth.value = false;
       return true;
     })
-    .catch(() => {
+    .catch((err) => {
       loadingAuth.value = false;
-      invalidCustomerNumbers.push(customerNumber.value);
-      customerNumberRef.value?.validate();
+      if (err?.response?.data === 'NOT_FOUND') {
+        invalidCustomerNumbers.push(customerNumber.value);
+        customerNumberRef.value?.validate();
+      }
       return false;
     });
 }
