@@ -25,5 +25,5 @@ export default {
   customerNumberNotExistsError: 'Zákazník nenalezen',
   login: 'Přihlásit se',
   cartEmptyTitle: 'Košík je prázdný',
-  cartEmptyDescription: 'Naskenujte nějaký produkt'
+  cartEmptyDescription: 'Naskenujte nějaký produkt',
 };
